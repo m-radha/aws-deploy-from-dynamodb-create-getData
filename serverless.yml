@@ -47,6 +47,14 @@ functions:
              method: GET
              cors: true
 
+  createUserData:
+        handler: lambda/endpoints/createUserData.handler
+        events:
+            - http:
+                  path: create-user-data/{ID}
+                  method: POST
+                  cors: true          
+
 
 resources:
   Resources:
