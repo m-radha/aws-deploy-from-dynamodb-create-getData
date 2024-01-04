@@ -11,10 +11,12 @@ provider:
   profile: serverlessUserRadha
   environment:
         tableName: ${self:custom.tableName}
+        bucketName: ${self:custom.bucketName}
   iamRoleStatements:
         - Effect: Allow
           Action:
               - dynamodb:*
+              - s3:*
           Resource: '*'
   
 
@@ -26,8 +28,9 @@ package:
 
 custom:
   tableName: checking-table
+  bucketName: serverless-user-radha-project-123
   s3Sync:
-     - bucketName: serverless-user-radha-project-123
+     - bucketName:  ${self:custom.bucketName}
        localDir: UploadData  
 
 functions:
@@ -53,7 +56,23 @@ functions:
             - http:
                   path: create-user-data/{ID}
                   method: POST
-                  cors: true          
+                  cors: true 
+
+  createFile:
+        handler: lambda/endpoints/createFile.handler
+        events:
+            - http:
+                  path: create-file/{fileName}
+                  method: POST
+                  cors: true  
+
+  getFile:
+        handler: lambda/endpoints/getFile.handler
+        events:
+            - http:
+                  path: get-file/{fileName}
+                  method: GET
+                  cors: true                                        
 
 
 resources:
@@ -61,7 +80,7 @@ resources:
       DemoBucketUpload:
            Type: AWS::S3::Bucket
            Properties: 
-              BucketName: serverless-user-radha-project-123
+              BucketName:  ${self:custom.bucketName}
 
       MyDynamoDbTable:
             Type: AWS::DynamoDB::Table
