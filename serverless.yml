@@ -18,6 +18,27 @@ provider:
               - dynamodb:*
               - s3:*
           Resource: '*'
+  # apiKeys:
+  #       - free:
+  #           - myFirstApiKey
+  #       - paid:
+  #           - myPaidApiKey
+  # usagePlan:
+  #     - free:
+  #         quota:
+  #           limit: 1000
+  #           period: MONTH
+  #         throttle:
+  #           rateLimit: 5
+  #           burstLimit: 20  
+
+  #     - paid:
+  #         quota:
+  #           limit: 10000
+  #           period: MONTH
+  #         throttle:
+  #           rateLimit: 50
+  #           burstLimit: 200                            
   
 
 plugins:
@@ -41,6 +62,7 @@ functions:
              path: get-user/{ID}
              method: GET
              cors: true
+             private: true
 
   getUserAge:
     handler: lambda/endpoints/getUserAge.handler
